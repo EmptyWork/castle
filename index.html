@@ -12,9 +12,16 @@
         rel="stylesheet">
     <link rel="shortcut icon" href="favicon.png" type="image/x-png">
     <style>
+        a,
+        a:visited {
+            color: #4c89b2;
+            text-underline-offset: 0.2em;
+        }
+
         body {
             margin: 0;
             padding: 0;
+            line-height: 1.5;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -41,12 +48,33 @@
             height: 100%;
         }
 
-        #codeInputer {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            line-height: 1;
+        }
+
+        #codeInputer,
+        button {
             color: azure;
             padding: 0.75em;
             border-radius: 0.2em;
             background-color: #071c2a;
             border: none;
+        }
+
+        button {
+            background-color: #164564;
+            text-transform: uppercase;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        #codeInputer {
+            box-shadow: 0px 2px 7px 3px hsl(0deg 0% 13.33% / 34.9%);
         }
 
         #codeInputer::placeholder {
@@ -63,18 +91,50 @@
                 list-style: none;
             }
         }
+
+        .fullmode {
+            position: fixed;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .top-button {
+            position: fixed;
+            top: 0;
+            left: 0;
+            margin: 1em;
+            z-index: 99999;
+        }
     </style>
 </head>
 
 <body>
+    <button id="topButton" class="top-button hide" onclick="fullMode()">Disable fullmode</button>
     <div class="top">
         <h1 style="margin: 0;">
-            Welcome to Pizza Castle
+            The Depth of the Castle
         </h1>
+        <span>by pizzapancakes</span>
         <div style="display: grid; gap: 1em; margin-bottom: 2em; padding: 2em 0;">
             <label for="codeInputer">Please type the code in here</label>
             <input type="text" id="codeInputer" placeholder="Code for the quest" autocomplete="off" autofocus>
-            <span style="font-size: 0.7em;">Disclaimer: any pictures or assets aren't hosted on this server.</span>
+            <div
+                style="font-size: 0.7em; max-width: 60ch; background-color: #164564; padding: 1em; border-radius: 0.2em;">
+                Disclaimer:
+                This website is in
+                no way affiliated with
+                <a href="https://shop.cosmosmc.org" target="_blank" rel="noopener noreferrer">CosmosMC</a>. Its sole
+                purpose
+                is to guide brave challengers in unraveling the sinister enigma of the
+                missing castle's elusive master. Abandon all hope, ye who dare delve into this cursed quest.
+            </div>
+            <button id="fullmodeButton" onclick="fullMode()" class="hide">Toggle Fullmode</button>
         </div>
     </div>
     <div class="bottom"></div>
@@ -84,20 +144,32 @@
     let modifiedLink
     const codeInputer = document.querySelector('#codeInputer')
     const iframeContainer = document.querySelector('.bottom')
+    const fullmodeButton = document.querySelector('#fullmodeButton')
+
+    const fullMode = () => {
+        const topButton = document.querySelector('#topButton')
+        iframeContainer.classList.toggle('fullmode')
+        if (iframeContainer.classList.contains('fullmode')) {
+            topButton.classList.remove('hide')
+            topButton.focus()
+        } else {
+            codeInputer.focus()
+            topButton.classList.add('hide')
+        }
+    }
 
     const createIframe = (inputedCode, previousElement) => {
         let iframeElement = document.createElement('iframe')
         iframeElement.src = `${permLink}/${inputedCode}`
         iframeElement.id = 'dialogFrame'
         iframeElement.frameBorder = 0
-        // iframeElement.width = "100%"
-        // iframeElement.height = "100%"
         iframeElement.style.position = "relative";
         iframeElement.style.height = "100%";
         iframeElement.style.width = "100%";
         if (previousElement) {
             previousElement.remove()
         }
+        fullmodeButton.classList.remove('hide')
         iframeContainer.appendChild(iframeElement)
         console.log(`${permLink}/${inputedCode}`)
     }
@@ -110,6 +182,10 @@
             createIframe(currentInput, dialogFrame)
         }, 0)
     })
+
+    // window.addEventListener('keypress', (e) => {
+    //     if (e.key == 'f') fullMode()
+    // })
 
 </script>
 
