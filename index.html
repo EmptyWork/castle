@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Castle Pizza</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+        rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.png" type="image/x-png">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            font-family: "Rubik", sans-serif;
+            font-optical-sizing: auto;
+            font-style: normal;
+            background-color: #04121b;
+            color: azure;
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        .top {
+            max-width: 30em;
+            max-height: fit-content;
+            padding: 2em;
+        }
+
+        .bottom {
+            flex: 1 auto;
+            width: 100%;
+            height: 100%;
+        }
+
+        #codeInputer {
+            color: azure;
+            padding: 0.75em;
+            border-radius: 0.2em;
+            background-color: #071c2a;
+            border: none;
+        }
+
+        #codeInputer::placeholder {
+            font-style: italic;
+        }
+
+        .latest-text {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 0.2em;
+
+            li {
+                list-style: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top">
+        <h1 style="margin: 0;">
+            Welcome to Pizza Castle
+        </h1>
+        <div style="display: grid; gap: 1em; margin-bottom: 2em; padding: 2em 0;">
+            <label for="codeInputer">Please type the code in here</label>
+            <input type="text" id="codeInputer" placeholder="Code for the quest" autocomplete="off" autofocus>
+            <span style="font-size: 0.7em;">Disclaimer: any pictures or assets aren't hosted on this server.</span>
+        </div>
+    </div>
+    <div class="bottom"></div>
+</body>
+<script>
+    let permLink = "https://castlemc.tumblr.com"
+    let modifiedLink
+    const codeInputer = document.querySelector('#codeInputer')
+    const iframeContainer = document.querySelector('.bottom')
+
+    const createIframe = (inputedCode, previousElement) => {
+        let iframeElement = document.createElement('iframe')
+        iframeElement.src = `${permLink}/${inputedCode}`
+        iframeElement.id = 'dialogFrame'
+        iframeElement.frameBorder = 0
+        // iframeElement.width = "100%"
+        // iframeElement.height = "100%"
+        iframeElement.style.position = "relative";
+        iframeElement.style.height = "100%";
+        iframeElement.style.width = "100%";
+        if (previousElement) {
+            previousElement.remove()
+        }
+        iframeContainer.appendChild(iframeElement)
+        console.log(`${permLink}/${inputedCode}`)
+    }
+
+    codeInputer.addEventListener("input", (e) => {
+        let dialogFrame = document.querySelector('#dialogFrame')
+        let currentInput = e.target.value
+        if (currentInput.length < 4) return
+        setTimeout(() => {
+            createIframe(currentInput, dialogFrame)
+        }, 0)
+    })
+
+</script>
+
+</html>
